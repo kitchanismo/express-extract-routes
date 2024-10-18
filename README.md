@@ -4,6 +4,8 @@ This package allows you to define and extract routes from class methods through 
 
 This package makes routing more declarative and keeps your routing logic clean and maintainable!
 
+[github.com/kitchanismo/express-extract-routes](https://github.com/kitchanismo/express-extract-routes)
+
 ## Installation
 
 Install the package using npm:
