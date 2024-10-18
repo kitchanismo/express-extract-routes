@@ -103,3 +103,19 @@ console.log(routes)
 ]
 */
 ```
+
+## GENERATING EXPRESS ROUTING
+
+```
+import { extract }  from express-extract-routes
+
+const routes = extract(UserController, AuthController)
+
+routes.forEach((route) => {
+app[route.method](
+    `/api` + route.path,
+    authenticateToken(route.options?.protected),//middleware for auth token
+    createController(route)// generating routing
+)
+})
+```
