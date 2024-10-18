@@ -10,7 +10,7 @@ type RouterType = {
   controller: any
 }
 
-function route(path: string, options?: RouteOptions, method?: string) {
+export function route(path: string, options?: RouteOptions, method?: string) {
   return function (target: any, key?: string, descriptor?: PropertyDescriptor) {
     if (key) {
       if (!target.constructor.routes) {
@@ -35,7 +35,7 @@ route.patch = (path: string, options?: RouteOptions) =>
 route.delete = (path: string, options?: RouteOptions) =>
   route(path, options, 'delete')
 
-function extract(...entities) {
+export function extract(...entities) {
   const routes = entities?.reduce((acc, curr) => {
     const prefix = (curr as any).prototype?.prefix || ''
     const _options = (curr as any).prototype?.options || null
