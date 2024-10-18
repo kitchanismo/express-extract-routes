@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.route = route;
+exports.extract = extract;
 function route(path, options, method) {
     return function (target, key, descriptor) {
         if (key) {
