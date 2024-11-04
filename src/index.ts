@@ -55,6 +55,34 @@ export function extract(...entities) {
   }, [])
   return routes as RouterType[]
 }
+
+export function createController(route) {
+  return async (req, res, next) => {
+    const action = new route.controller()[route.action]({
+      req,
+      res,
+      next,
+    })
+    if (action instanceof Promise) {
+      try {
+        const data = await action
+        if (!res.headersSent) {
+          return res.send(data)
+        }
+      } catch (error) {
+        if (error?.message?.includes('circular')) {
+          return res.status(400).send({ message: error?.message })
+        }
+        return res.status(400).send({ message: error?.message })
+      }
+    }
+    //throw error if header throw again
+    if (res.headersSent) return
+
+    return res.json(action)
+  }
+}
+
 const main = { extract, route }
 
 export default main
