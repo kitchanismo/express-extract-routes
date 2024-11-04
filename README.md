@@ -113,7 +113,8 @@ const routes = extract(UserController, AuthController)
 
 routes.forEach((route) => {
 app[route.method](
-    `/api` + route.path,
+    //you can add prefix
+    `/v1` + route.path,
     //middleware for auth token
     authenticateToken(route.options?.protected),
     //add here another middlewares
