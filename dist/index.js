@@ -1,7 +1,17 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.route = route;
 exports.extract = extract;
+exports.createController = createController;
 function route(path, options, method) {
     return function (target, key, descriptor) {
         if (key) {
@@ -36,6 +46,34 @@ function extract(...entities) {
         return [...acc, ...routers];
     }, []);
     return routes;
+}
+function createController(route) {
+    return (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        var _a;
+        const action = new route.controller()[route.action]({
+            req,
+            res,
+            next,
+        });
+        if (action instanceof Promise) {
+            try {
+                const data = yield action;
+                if (!res.headersSent) {
+                    return res.send(data);
+                }
+            }
+            catch (error) {
+                if ((_a = error === null || error === void 0 ? void 0 : error.message) === null || _a === void 0 ? void 0 : _a.includes('circular')) {
+                    return res.status(400).send({ message: error === null || error === void 0 ? void 0 : error.message });
+                }
+                return res.status(400).send({ message: error === null || error === void 0 ? void 0 : error.message });
+            }
+        }
+        //throw error if header throw again
+        if (res.headersSent)
+            return;
+        return res.json(action);
+    });
 }
 const main = { extract, route };
 exports.default = main;

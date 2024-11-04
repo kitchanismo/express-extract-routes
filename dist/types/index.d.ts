@@ -18,6 +18,7 @@ export declare namespace route {
     export { _a as delete };
 }
 export declare function extract(...entities: any[]): RouterType[];
+export declare function createController(route: any): (req: any, res: any, next: any) => Promise<any>;
 declare const main: {
     extract: typeof extract;
     route: typeof route;
