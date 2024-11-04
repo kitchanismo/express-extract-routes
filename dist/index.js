@@ -50,11 +50,7 @@ function extract(...entities) {
 function createController(route) {
     return (req, res, next) => __awaiter(this, void 0, void 0, function* () {
         var _a;
-        const action = new route.controller()[route.action]({
-            req,
-            res,
-            next,
-        });
+        const action = new route.controller()[route.action](req, res, next);
         if (action instanceof Promise) {
             try {
                 const data = yield action;
