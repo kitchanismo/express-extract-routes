@@ -1,8 +1,9 @@
 interface RouteOptions {
     protected?: boolean;
 }
+type HttpMethod = 'get' | 'post' | 'put' | 'delete';
 type RouterType = {
-    method: string;
+    method: HttpMethod;
     path: string;
     action: string;
     options: RouteOptions;

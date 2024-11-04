@@ -60,11 +60,7 @@ export function extract(...entities) {
 
 export function createController(route) {
   return async (req, res, next) => {
-    const action = new route.controller()[route.action]({
-      req,
-      res,
-      next,
-    })
+    const action = new route.controller()[route.action](req, res, next)
     if (action instanceof Promise) {
       try {
         const data = await action
