@@ -1,3 +1,11 @@
+import { NextFunction } from 'express';
+import { Response } from 'express';
+import { Request } from 'express';
+export interface IContext<TReq = any, TRes = any> {
+    req: TReq;
+    res: TRes;
+    next: (...args: any[]) => void;
+}
 interface RouteOptions {
     protected?: boolean;
 }
@@ -19,7 +27,7 @@ export declare namespace route {
     export { _a as delete };
 }
 export declare function extract(...entities: any[]): RouterType[];
-export declare function createController(route: any): (req: any, res: any, next: any) => Promise<any>;
+export declare function createController(route: any): (req: Request, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>>>;
 declare const main: {
     extract: typeof extract;
     route: typeof route;

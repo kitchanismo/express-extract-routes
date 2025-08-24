@@ -1,3 +1,13 @@
+import { NextFunction } from 'express'
+import { Response } from 'express'
+import { Request } from 'express'
+
+export interface IContext<TReq = any, TRes = any> {
+  req: TReq
+  res: TRes
+  next: (...args: any[]) => void
+}
+
 interface RouteOptions {
   protected?: boolean
 }
@@ -59,7 +69,7 @@ export function extract(...entities) {
 }
 
 export function createController(route) {
-  return async (req, res, next) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     const action = new route.controller()[route.action](req, res, next)
     if (action instanceof Promise) {
       try {
